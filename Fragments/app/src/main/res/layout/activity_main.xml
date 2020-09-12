@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragmentList"
-        android:name="view.HotelListFragment"
+        android:name="ui.HotelListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

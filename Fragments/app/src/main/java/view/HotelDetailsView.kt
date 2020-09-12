@@ -1,4 +1,4 @@
-package presenter
+package view
 
 import model.data.Hotel
 

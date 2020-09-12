@@ -1,6 +1,7 @@
 package presenter
 
 import model.repository.HotelRepository
+import view.HotelDetailsView
 
 class HotelDetailsPresenter(
     private val view: HotelDetailsView,

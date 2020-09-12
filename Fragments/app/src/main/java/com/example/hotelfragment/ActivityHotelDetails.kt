@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import view.HotelDetailsFragment
+import ui.HotelDetailsFragment
 
 class ActivityHotelDetails : AppCompatActivity() {
     private val hotelId: Long by lazy { intent.getLongExtra(EXTRA_HOTEL_ID, -1) }

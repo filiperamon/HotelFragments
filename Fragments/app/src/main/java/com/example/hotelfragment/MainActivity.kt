@@ -7,13 +7,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import model.data.Hotel
-import view.HotelDetailsFragment
-import view.HotelListFragment
+import ui.AboutDialogFragment
+import ui.HotelDetailsFragment
+import ui.HotelFormFragment
+import ui.HotelListFragment
 
-class MainActivity : AppCompatActivity()
-        , HotelListFragment.OnHotelClickListener
-        , SearchView.OnQueryTextListener
-        , MenuItem.OnActionExpandListener {
+class MainActivity :
+        AppCompatActivity(), HotelListFragment.OnHotelClickListener, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, HotelFormFragment.OnHotelSavedListener {
 
     private var lastSearchTerm: String = ""
     private var searchView: SearchView? = null
@@ -37,6 +37,10 @@ class MainActivity : AppCompatActivity()
         lastSearchTerm = savedInstanceState?.getString(EXTRA_SEARCH_TERM) ?: ""
     }
 
+    //private fun isTablet() = findViewById<View>(R.id.details) != null
+    private fun isTablet() = resources.getBoolean(R.bool.tablet)
+    private fun isSmartphone() = resources.getBoolean(R.bool.smartphone)
+
     override fun onHotelClick(hotel: Hotel) {
         when {
             isTablet() -> {
@@ -51,14 +55,11 @@ class MainActivity : AppCompatActivity()
         }
     }
 
-    //private fun isTablet() = findViewById<View>(R.id.details) != null
-    private fun isTablet() = resources.getBoolean(R.bool.tablet)
-    private fun isSmartphone() = resources.getBoolean(R.bool.smartphone)
-
     private fun showDetailsActivity(hotelId: Long) {
         ActivityHotelDetails.open(this, hotelId)
     }
 
+    /*Para tabletes*/
     private fun showDetailsFragment(hotelId: Long) {
         /*Recria o menu para que nao seja notificado com texto vazio*/
         searchView?.setOnQueryTextListener(null)
@@ -92,6 +93,10 @@ class MainActivity : AppCompatActivity()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId) {
+            R.id.action_info -> AboutDialogFragment().show(supportFragmentManager, TAG_ABOUT)
+            R.id.action_new -> HotelFormFragment().open(supportFragmentManager)
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -111,7 +116,12 @@ class MainActivity : AppCompatActivity()
         return true
     }
 
+    override fun onHotelSaved(hotel: Hotel) {
+        listFragment.search(lastSearchTerm)
+    }
+
     companion object {
         private val EXTRA_SEARCH_TERM = "lastSearch"
+        private val TAG_ABOUT = "about"
     }
 }

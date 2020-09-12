@@ -1,4 +1,4 @@
-package view
+package ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.fragment_hotel_details.*
 import model.data.Hotel
 import model.repository.MemoryRepository
 import presenter.HotelDetailsPresenter
-import presenter.HotelDetailsView
+import view.HotelDetailsView
 
 class HotelDetailsFragment : Fragment(), HotelDetailsView {
     private var presenter = HotelDetailsPresenter(this, MemoryRepository)
