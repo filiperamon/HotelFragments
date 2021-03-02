@@ -1,11 +1,11 @@
 package com.example.hotelfragment.list
 
 import com.example.hotelfragment.model.data.Hotel
-import com.example.hotelfragment.repository.HotelRepository
+import com.example.hotelfragment.repository.sqllite.SQLiteRepository
 
 class HotelListPresenter(
     private val view: HotelListView,
-    private val repository: HotelRepository
+    private val repository: SQLiteRepository
 ) {
     private var lastTerm = ""
     private var inDeleteMode = false

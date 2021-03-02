@@ -1,13 +1,13 @@
 package com.example.hotelfragment.form
 
 import com.example.hotelfragment.model.data.Hotel
-import com.example.hotelfragment.repository.HotelRepository
 import com.example.hotelfragment.model.service.HotelValidator
+import com.example.hotelfragment.repository.sqllite.SQLiteRepository
 import java.lang.Exception
 
 class HotelFormPresenter(
     private val view: HotelFormView,
-    private val repository: HotelRepository
+    private val repository: SQLiteRepository
 ) {
     private val validator = HotelValidator()
 

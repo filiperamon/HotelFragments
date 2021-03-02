@@ -27,6 +27,7 @@ class HotelActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         fabAdd.setOnClickListener {
             listFragment.hideDeleteMode()
             HotelFormFragment.newInstance().open(supportFragmentManager)

@@ -9,10 +9,12 @@ import androidx.fragment.app.FragmentManager
 import com.example.hotelfragment.R
 import kotlinx.android.synthetic.main.fragment_hotel_form.*
 import com.example.hotelfragment.model.data.Hotel
-import com.example.hotelfragment.repository.MemoryRepository
+import com.example.hotelfragment.repository.sqllite.SQLiteRepository
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class HotelFormFragment : DialogFragment(), HotelFormView {
-    private val presenter = HotelFormPresenter(this, MemoryRepository)
+    private val presenter: HotelFormPresenter by inject { parametersOf(this) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_hotel_form, container, false)
