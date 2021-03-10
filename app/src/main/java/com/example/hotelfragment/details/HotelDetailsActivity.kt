@@ -1,12 +1,14 @@
 package com.example.hotelfragment.details
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.hotelfragment.R
+import com.example.hotelfragment.form.HotelFormFragment
+import com.example.hotelfragment.model.data.Hotel
 
-class HotelDetailsActivity : AppCompatActivity() {
+class HotelDetailsActivity : AppCompatActivity(), HotelFormFragment.OnHotelSavedListener {
     private val hotelId: Long by lazy { intent.getLongExtra(EXTRA_HOTEL_ID, -1) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +30,17 @@ class HotelDetailsActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_HOTEL_ID = "hotelId"
 
-        fun open(context: Context, hotelId: Long) {
-            context.startActivity(Intent(context, HotelDetailsActivity::class.java).apply {
+        fun open(activity: Activity, hotelId: Long) {
+        activity.startActivityForResult(
+            Intent(activity, HotelDetailsActivity::class.java).apply {
                 putExtra(EXTRA_HOTEL_ID, hotelId)
-            })
+            }, 0
+        )
         }
+    }
+
+    override fun onHotelSaved(hotel: Hotel) {
+        setResult(RESULT_OK)
+        showHotelDetailsFragment()
     }
 }

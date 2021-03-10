@@ -1,24 +1,28 @@
 package com.example.hotelfragment.common
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import com.example.hotelfragment.details.HotelDetailsActivity
 import com.example.hotelfragment.R
-import kotlinx.android.synthetic.main.activity_main.*
-import com.example.hotelfragment.model.data.Hotel
+import com.example.hotelfragment.details.HotelDetailsActivity
 import com.example.hotelfragment.details.HotelDetailsFragment
 import com.example.hotelfragment.form.HotelFormFragment
 import com.example.hotelfragment.list.HotelListFragment
+import com.example.hotelfragment.model.data.Hotel
+import kotlinx.android.synthetic.main.activity_main.*
 
 class HotelActivity :
-        AppCompatActivity(), HotelListFragment.OnHotelClickListener, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, HotelFormFragment.OnHotelSavedListener {
+    AppCompatActivity(), HotelListFragment.OnHotelClickListener, SearchView.OnQueryTextListener,
+    MenuItem.OnActionExpandListener, HotelFormFragment.OnHotelSavedListener {
 
     private var lastSearchTerm: String = ""
     private var searchView: SearchView? = null
+    private var hotelIdSelected: Long = 0
 
     private val listFragment: HotelListFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.fragmentList) as HotelListFragment
@@ -49,6 +53,7 @@ class HotelActivity :
     private fun isSmartphone() = resources.getBoolean(R.bool.smartphone)
 
     override fun onHotelClick(hotel: Hotel) {
+        hotelIdSelected = hotel.id
         when {
             isTablet() -> {
                 showDetailsFragment(hotel.id)
@@ -73,9 +78,9 @@ class HotelActivity :
 
         val fragment = HotelDetailsFragment.newInstance(hotelId)
         supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.details, fragment, HotelDetailsFragment.TAG_DETAILS)
-                .commit()
+            .beginTransaction()
+            .replace(R.id.details, fragment, HotelDetailsFragment.TAG_DETAILS)
+            .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,7 +107,6 @@ class HotelActivity :
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.action_info -> AboutDialogFragment().show(supportFragmentManager, TAG_ABOUT)
-            //R.id.action_new -> HotelFormFragment().open(supportFragmentManager)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -125,6 +129,21 @@ class HotelActivity :
 
     override fun onHotelSaved(hotel: Hotel) {
         listFragment.search(lastSearchTerm)
+
+        val detailsFragment = supportFragmentManager
+            .findFragmentByTag(HotelDetailsFragment.TAG_DETAILS) as? HotelDetailsFragment
+
+        if(detailsFragment != null && hotel.id == hotelIdSelected) {
+            showDetailsFragment(hotelIdSelected)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+            listFragment.search(lastSearchTerm)
+        }
     }
 
     companion object {

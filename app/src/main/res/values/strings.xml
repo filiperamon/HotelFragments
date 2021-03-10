@@ -31,6 +31,7 @@
     <!--SnackBar Delete Itens-->
     <string name="message_hotels_deleted">%d itens excluidos</string>
     <string name="undo">Desfazer</string>
+    <string name="action_edit">Editar</string>
     <!--SnackBar Delete Itens-->
 
 

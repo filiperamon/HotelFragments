@@ -7,8 +7,9 @@ import androidx.appcompat.widget.ShareActionProvider
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import com.example.hotelfragment.R
-import kotlinx.android.synthetic.main.fragment_hotel_details.*
+import com.example.hotelfragment.form.HotelFormFragment
 import com.example.hotelfragment.model.data.Hotel
+import kotlinx.android.synthetic.main.fragment_hotel_details.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -28,6 +29,17 @@ class HotelDetailsFragment : Fragment(), HotelDetailsView {
         var shareItem = menu?.findItem(R.id.action_share)
         shareActionProvider = MenuItemCompat.getActionProvider(shareItem) as? ShareActionProvider
         setShareIntent()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item?.itemId == R.id.action_edit) {
+            HotelFormFragment
+                .newInstance(hotel?.id ?: 0)
+                .open(requireFragmentManager())
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setShareIntent() {
